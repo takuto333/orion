@@ -5,11 +5,42 @@
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.9.0/css/all.min.css" integrity="sha256-UzFD2WYH2U1dQpKDjjZK72VtPeWP50NoJjd26rnAdUI=" crossorigin="anonymous" />
     <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
   </head>
 
   <body>
+      <% if flash[:notice] %>
+      <div class="notification is-info">
+        <p class="notice"><%= notice %></p>
+      </div>
+    <% end %>
+
+    <% if flash[:alert] %>
+      <div class="notification is-danger">
+        <p class="alert"><%= alert %></p>
+      </div>
+    <% end %>
+
+    <header class="header">
+      <div class="header__title">
+        <%= link_to "Orion", root_path , class: "header__title--text" %>
+      </div>
+      </div>
+      <div class="header__right">
+        <% if user_signed_in? %>
+          <%= link_to current_user.nickname, edit_user_registration_path(current_user), class: "header__right--btn" %>
+          <%= link_to "新規投稿", "#", class: "header__right--btn" %>
+          <%= link_to "ログアウト", destroy_user_session_path, method: :delete, class: "header__right--btn" %>
+        <% else %>
+          <%= link_to "ログイン", new_user_session_path, class: "header__right--btn" %>
+          <%= link_to "新規登録", new_user_registration_path, class: "header__right--btn" %>
+        <% end %>
+      </div>
+    </header>
+
     <%= yield %>
   </body>
 </html>
